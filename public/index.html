@@ -14,7 +14,11 @@
       <div ng-controller="ToDoController as todo">
         <h3>{{ todo.message }}</h3>
         <ul>
-          <li ng-repeat="item in todo.myTodos" ng-class="item.value ? 'clicked' : 'un-clicked'" ng-click="todo.changeClass(item)">{{ item.label }}</li>
+          <li
+            ng-repeat="item in todo.myTodos"
+            ng-class="item.value ? 'clicked' : 'un-clicked'" ng-click="todo.changeClass(item)">
+            {{ item.label }}
+        </li>
         </ul>
         <div ng-show="todo.show()">You have {{ todo.count }} todos remaining</div>
       </div>
