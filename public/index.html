@@ -17,10 +17,11 @@
           <li
             ng-repeat="item in todo.myTodos"
             ng-class="item.value ? 'clicked' : 'un-clicked'" ng-click="todo.changeClass(item)">
-            {{ item.label }}
+            {{ item.details }}
         </li>
         </ul>
         <div ng-show="todo.show()">You have {{ todo.count }} todos remaining</div>
+        <div ng-show="!todo.show()"> DONE!!</div>
       </div>
     </div>
 

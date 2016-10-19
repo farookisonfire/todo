@@ -3,28 +3,31 @@ const app = angular.module('todo', [])
 app.controller('HomeController', Welcome)
 app.controller('ToDoController', ToDos)
 
+ToDos.$inject = ['$http']
 
 function Welcome(){
   const vm = this;
   vm.message = 'Welcome!'
 }
 
-function ToDos() {
+function ToDos($http) {
   const vm = this;
-  vm.myTodos = [
-    {label: 'Eat food', value: false},
-    {label: 'Drink beer', value: false},
-    {label:'Sleep', value: false}
-  ]
+  vm.myTodos = []
   vm.message = 'Todos go here:'
   vm.class = 'un-clicked'
   vm.count = 3
+  vm.count > 0 ? true : false
   vm.show = function(){
     return vm.count
   }
 
-  vm.count > 0 ? true : false
+  loadTodos()
 
+  function loadTodos() {
+    $http.get('/todos').success(todos => {
+      vm.myTodos = todos
+    })
+  }
   vm.changeClass = function(item){
     if (item.value) {
       item.value = false
