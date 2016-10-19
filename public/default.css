@@ -1,0 +1,7 @@
+.clicked {
+  text-decoration: line-through;
+}
+
+.un-clicked {
+  font-weight: bold;
+}

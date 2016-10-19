@@ -3,15 +3,23 @@
   <head>
     <meta charset="utf-8">
     <link href="default.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <title>Exercise 76</title>
   </head>
   <body>
     <div ng-app="todo">
       <div ng-controller="HomeController as home">
-        {{ home.message }}
+        <h1>{{ home.message }}</h1>
+      </div>
+      <div ng-controller="ToDoController as todo">
+        <h3>{{ todo.message }}</h3>
+        <ul>
+          <li ng-repeat="item in todo.myTodos" ng-class="item.value ? 'clicked' : 'un-clicked'" ng-click="todo.changeClass(item)">{{ item.label }}</li>
+        </ul>
+        <div ng-show="todo.show()">You have {{ todo.count }} todos remaining</div>
       </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+
     <script src="default.js"></script>
   </body>
 </html>
