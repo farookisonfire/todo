@@ -20,11 +20,7 @@ function ToDos() {
   vm.class = 'un-clicked'
   vm.count = 3
   vm.show = function(){
-    if (vm.count > 0) {
-      return true
-    } else {
-      return false
-    }
+    return vm.count
   }
 
   vm.count > 0 ? true : false
