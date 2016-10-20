@@ -1,15 +1,13 @@
-angular
-  .module('todo', [])
-  .controller('HomeController', TheHomeController)
-    .$inject = ['$http']
+var app = angular.module('todo', [])
+app.controller('HomeController', TheHomeController)
+app.factory('todosData', todosData)
 
-function TheHomeController($http){
+
+TheHomeController.$inject = ['todosData']
+
+function TheHomeController(todosData){
   const vm = this;
-  vm.todos = [
-    // {details:'Eat food', completed:false},
-    // {details: 'Drink water', completed:true},
-    // {details: 'Sleep', completed:false}
-  ]
+  vm.todos = []
   vm.message = 'Hey World'
   vm.switch = (todo) => {
     todo.completed = !todo.completed
@@ -18,24 +16,44 @@ function TheHomeController($http){
   vm.count = theCount()
   vm.newTodo = {details: '', completed:false}
 
-  $http.get('/todos').success(todos => {
-    vm.todos = todos
+  // function loadTodos(){
+  // $http.get('/todos').success(todos => {
+  //   vm.todos = todos
+  // })
+  // }
+  // loadTodos()
+
+  todosData.loadTodos().then(res => {
+    vm.todos = res
   })
 
+
   vm.addTodo = () => {
-    console.log('post should have fired')
-
-    // const data = {
-    //   details:'test1', completed:false
-    // }
-
-    $http.post('/todos', vm.newTodo)
-      .success(todo => {
-        vm.todos.push(todo)
-      })
+    todosData.addTodo(vm.newTodo).then(res => vm.todos.push(res) )
   }
 
   function theCount(){
     return vm.todos.filter(todo => !todo.completed).length
   }
+}
+
+
+
+
+todosData.$inject = ['$http']
+
+function todosData($http){
+  return {
+    loadTodos,
+    addTodo
+  }
+
+  function loadTodos(){
+    return $http.get('/todos').then(res => res.data)
+  }
+
+  function addTodo(todo){
+    return $http.post('/todos', todo).then(res => res.data)
+  }
+
 }
