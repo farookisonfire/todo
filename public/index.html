@@ -4,27 +4,25 @@
     <meta charset="utf-8">
     <link href="default.css" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-    <title>Exercise 76</title>
+    <title>Angular Practice</title>
   </head>
-  <body>
-    <div ng-app="todo">
-      <div ng-controller="HomeController as home">
-        <h1>{{ home.message }}</h1>
-      </div>
-      <div ng-controller="ToDoController as todo">
-        <h3>{{ todo.message }}</h3>
-        <ul>
-          <li
-            ng-repeat="item in todo.myTodos"
-            ng-class="item.value ? 'clicked' : 'un-clicked'" ng-click="todo.changeClass(item)">
-            {{ item.details }}
-        </li>
-        </ul>
-        <div ng-show="todo.show()">You have {{ todo.count }} todos remaining</div>
-        <div ng-show="!todo.show()"> DONE!!</div>
-      </div>
+  <body ng-app="todo">
+    <div ng-controller="HomeController as home">
+      <p>{{ home.message }}</p>
+      <ul ng-repeat="todo in home.todos">
+        <li ng-class="{completed : todo.completed}" ng-click="home.switch(todo)">{{ todo.details }}</li>
+      </ul>
+      <h4 ng-show="home.newTodo.details.length > 0">Sample Output</h4>
+      <ul ng-show="home.newTodo.details.length > 0">
+        <li>{{ home.newTodo.details }}</li>
+      </ul>
+      <p ng-show="home.count">You have {{ home.count }} remaining</p>
+      <!-- <p ng-show="!home.count">DONE!</p> -->
+      <form ng-submit="home.addTodo()">
+        <input ng-model="home.newTodo.details" type="text" placeholder="add todo"/>
+        <button type="submit">Add</button>
+      </form>
     </div>
-
     <script src="default.js"></script>
   </body>
 </html>

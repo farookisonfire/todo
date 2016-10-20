@@ -1,7 +1,3 @@
-.clicked {
+.completed {
   text-decoration: line-through;
-}
-
-.un-clicked {
-  font-weight: bold;
 }
