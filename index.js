@@ -1,24 +1,16 @@
-const express = require('express')
+const createApp = require('./create-app')
 const { MongoClient } = require('mongodb')
 
-MongoClient.connect('mongodb://localhost:27017/todo-app', (err, db) => {
+const URI = 'mongodb://localhost:27017/todo-app'
+const PORT = 3000
 
-  const app = express()
-
-  var myTodos = db.collection('todo')
-
-  app.use(express.static('public'))
-
-  app.get('/todos', (req, res) => {
-    myTodos.find().toArray((err,docs) => {
-      if(err) res.sendStatus(500)
-      console.log('get handled')
-      console.log(docs)
-      res.json(docs)
-    })
+MongoClient.connect(URI, (err, db) => {
+  if(err) {
+    console.error(err)
+    process.exit(1)
+  }
+  const app = createApp(db)
+  app.listen(PORT, ()=>{
+    console.log('listening on ' + PORT)
   })
-  app.listen(3000, ()=> {
-    console.log('listening on port 3000')
-  })
-
 })

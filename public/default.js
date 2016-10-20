@@ -1,78 +1,41 @@
-const app = angular.module('todo', [])
+angular
+  .module('todo', [])
+  .controller('HomeController', TheHomeController)
+    .$inject = ['$http']
 
-app.controller('HomeController', Welcome)
-app.controller('ToDoController', ToDos)
-
-ToDos.$inject = ['$http']
-
-function Welcome(){
+function TheHomeController($http){
   const vm = this;
-  vm.message = 'Welcome!'
+  vm.todos = [
+    // {details:'Eat food', completed:false},
+    // {details: 'Drink water', completed:true},
+    // {details: 'Sleep', completed:false}
+  ]
+  vm.message = 'Hey World'
+  vm.switch = (todo) => {
+    todo.completed = !todo.completed
+    vm.count = theCount()
+  }
+  vm.count = theCount()
+  vm.newTodo = {details: '', completed:false}
+
+  $http.get('/todos').success(todos => {
+    vm.todos = todos
+  })
+
+  vm.addTodo = () => {
+    console.log('post should have fired')
+
+    // const data = {
+    //   details:'test1', completed:false
+    // }
+
+    $http.post('/todos', vm.newTodo)
+      .success(todo => {
+        vm.todos.push(todo)
+      })
+  }
+
+  function theCount(){
+    return vm.todos.filter(todo => !todo.completed).length
+  }
 }
-
-function ToDos($http) {
-  const vm = this;
-  vm.myTodos = []
-  vm.message = 'Todos go here:'
-  vm.class = 'un-clicked'
-  vm.count = 3
-  vm.count > 0 ? true : false
-  vm.show = function(){
-    return vm.count
-  }
-
-  loadTodos()
-
-  function loadTodos() {
-    $http.get('/todos').success(todos => {
-      vm.myTodos = todos
-    })
-  }
-  vm.changeClass = function(item){
-    if (item.value) {
-      item.value = false
-      vm.count += 1
-    } else {
-      item.value = true
-      vm.count -= 1
-    }
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const app = angular.module('greet', []);
-//
-// app.controller('Welcome', Greet);
-// app.controller('Slogan', TheSlogan);
-//
-// function Greet() {
-//   const vm = this;
-//   vm.greeting = 'Hello there!'
-// }
-//
-// function TheSlogan() {
-//   const vm = this;
-//   vm.greeting = 'Welcome to the real world'
-// }
