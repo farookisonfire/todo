@@ -10,7 +10,10 @@ function TheHomeController(todosData){
   vm.todos = []
   vm.message = 'Hey World'
   vm.switch = (todo) => {
-    todo.completed = !todo.completed
+    // const toUpdate = Object.assign({},todo,{completed:!todo.completed})
+    todosData.updateTodo(todo).then(res => {
+      Object.assign(todo, res)
+    })
     vm.count = theCount()
   }
   vm.count = theCount()
@@ -38,14 +41,13 @@ function TheHomeController(todosData){
 }
 
 
-
-
 todosData.$inject = ['$http']
 
 function todosData($http){
   return {
     loadTodos,
-    addTodo
+    addTodo,
+    updateTodo
   }
 
   function loadTodos(){
@@ -54,6 +56,17 @@ function todosData($http){
 
   function addTodo(todo){
     return $http.post('/todos', todo).then(res => res.data)
+  }
+
+  function updateTodo(todo){
+    const todoId = todo._id
+    console.log(todoId)
+    console.log(todo.completed)
+    return $http.put('/todos/todoId/' + todoId + '/completed/' + todo.completed).then(res =>{
+      console.log('here\'s the res.data:')
+      console.log(res.data)
+      return res.data
+    })
   }
 
 }
